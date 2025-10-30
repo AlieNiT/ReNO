@@ -49,4 +49,4 @@ class BLIPLoss(BaseRewardLoss):
             **text_inputs, 
             use_itm_head=False
         )[0]
-        return 1 - blip_loss
+        return 100 * (1 - blip_loss)

@@ -99,7 +99,7 @@ class LatentNoiseTrainer:
             total_loss = 0
             preprocessed_image = self.preprocess_fn(image)
             for reward_loss in self.reward_losses:
-                loss = reward_loss(preprocessed_image, prompt)
+                loss = reward_loss(preprocessed_image, prompt).squeeze()
                 to_log += f"{reward_loss.name}: {loss.item():.4f}, "
                 total_loss += loss * reward_loss.weighting
                 rewards[reward_loss.name] = loss.item()
