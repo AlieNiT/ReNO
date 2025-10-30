@@ -5,12 +5,7 @@ from torchvision.transforms import (CenterCrop, Compose, InterpolationMode,
                                     Normalize, Resize)
 from transformers import AutoProcessor
 
-from rewards.aesthetic import AestheticLoss
 from rewards.base_reward import BaseRewardLoss
-from rewards.clip import CLIPLoss
-from rewards.hps import HPSLoss
-from rewards.imagereward import ImageRewardLoss
-from rewards.pickscore import PickScoreLoss
 
 
 def get_reward_losses(
@@ -22,10 +17,12 @@ def get_reward_losses(
         )
     reward_losses = []
     if args.enable_hps:
+        from rewards.hps import HPSLoss
         reward_losses.append(
             HPSLoss(args.hps_weighting, dtype, device, cache_dir, memsave=args.memsave)
         )
     if args.enable_imagereward:
+        from rewards.imagereward import ImageRewardLoss
         reward_losses.append(
             ImageRewardLoss(
                 args.imagereward_weighting,
@@ -36,6 +33,7 @@ def get_reward_losses(
             )
         )
     if args.enable_clip:
+        from rewards.clip import CLIPLoss
         reward_losses.append(
             CLIPLoss(
                 args.clip_weighting,
@@ -47,6 +45,7 @@ def get_reward_losses(
             )
         )
     if args.enable_pickscore:
+        from rewards.pickscore import PickScoreLoss
         reward_losses.append(
             PickScoreLoss(
                 args.pickscore_weighting,
@@ -58,6 +57,7 @@ def get_reward_losses(
             )
         )
     if args.enable_aesthetic:
+        from rewards.aesthetic import AestheticLoss
         reward_losses.append(
             AestheticLoss(
                 args.aesthetic_weighting, dtype, device, cache_dir, memsave=args.memsave
