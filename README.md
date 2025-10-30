@@ -13,6 +13,14 @@ Text-to-Image (T2I) models have made significant advancements in recent years, b
 ## Setup
 First, install the necessary dependencies in `environment.yml`. Note that currently HPSv2 does not automatically download the OpenCLIP tokenizer, and you might have to manually download it as described [here](https://github.com/tgxs002/HPSv2/issues/30). If you want to use the Aesthetic predictor, place the [checkpoint](https://github.com/christophschuhmann/improved-aesthetic-predictor/raw/main/ava+logos-l14-linearMSE.pth) in `./ckpts/aesthetic_model.pth`.
 
+**NOTE** If you're using Google Colab, run this command and then restart the session
+```
+!pip install torch torchvision pytorch-lightning \
+    datasets==2.18 diffusers==0.30.0 hpsv2==1.2 image-reward==1.5 \
+    open-clip-torch==2.24 blobfile openai-clip optimum xformers \
+    transformers==4.37.2 peft==0.10.0 protobuf>=5.29 fsspec>=2025.3
+```
+
 Additionally, if you want to use [T2I-CompBench](https://github.com/Karine-Huang/T2I-CompBench/tree/main) or [GenEval](https://github.com/djghosh13/geneval/tree/main), you need to clone their respective repositories into the same parent directory as `ReNO`.
 
 Lastly, for convenience the default output directory and cache directory can be set in `arguments.py` such that one does not need to pass them everytime.
