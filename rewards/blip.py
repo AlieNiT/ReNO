@@ -32,14 +32,25 @@ class BLIPLoss(BaseRewardLoss):
         super().__init__("BLIP", weighting)
 
     def get_image_features(self, image: torch.Tensor) -> torch.Tensor:
-        img_features = self.blip_model.get_image_features(image)
-        return img_features
+        vision_outputs = self.blip_model.vision_model(pixel_values=image)
+        image_embeds = vision_outputs[0]
+        image_features = self.blip_model.vision_proj(image_embeds[:, 0, :])
+        image_features = torch.nn.functional.normalize(image_features, dim=-1)
+        return image_features
 
     def get_text_features(self, prompt: str) -> torch.Tensor:
         prompt_token = self.processor(
             text=[prompt], padding=True, return_tensors="pt"
-        ).to("cuda")
-        text_features = self.blip_model.get_text_features(**prompt_token)
+        ).to(self.blip_model.device)
+        
+        text_outputs = self.blip_model.text_encoder(
+            input_ids=prompt_token.input_ids,
+            attention_mask=prompt_token.attention_mask,
+            return_dict=True,
+        )
+        question_embeds = text_outputs.last_hidden_state
+        text_features = self.blip_model.text_proj(question_embeds[:, 0, :])
+        text_features = torch.nn.functional.normalize(text_features, dim=-1)
         return text_features
 
     def compute_loss(
