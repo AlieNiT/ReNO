@@ -75,6 +75,18 @@ def parse_args():
         default=0.05,
     )
     parser.add_argument(
+        "--disable_blip",
+        default=True,
+        action="store_false",
+        dest="enable_blip",
+    )
+    parser.add_argument(
+        "--blip_weighting",
+        type=float,
+        help="Weighting for BLIP",
+        default=0.01,
+    )
+    parser.add_argument(
         "--disable_aesthetic",
         default=False,
         action="store_false",
@@ -117,7 +129,7 @@ def parse_args():
         "--benchmark_reward",
         help="Reward to benchmark on",
         default="total",
-        choices=["ImageReward", "PickScore", "HPS", "CLIP", "total"],
+        choices=["ImageReward", "PickScore", "HPS", "CLIP", "BLIP", "total"],
     )
 
     # general

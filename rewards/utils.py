@@ -56,6 +56,17 @@ def get_reward_losses(
                 memsave=args.memsave,
             )
         )
+    if args.enable_blip:
+        from rewards.blip import BLIPLoss
+        reward_losses.append(
+            BLIPLoss(
+                args.blip_weighting,
+                dtype,
+                device,
+                cache_dir,
+                memsave=args.memsave,
+            )
+        )
     if args.enable_aesthetic:
         from rewards.aesthetic import AestheticLoss
         reward_losses.append(
