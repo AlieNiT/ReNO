@@ -63,6 +63,12 @@ def parse_args():
         "--clip_weighting", type=float, help="Weighting for CLIP", default=0.01
     )
     parser.add_argument(
+        "--disable_blip", default=True, action="store_false", dest="enable_blip",
+    )
+    parser.add_argument(
+        "--blip_weighting", type=float, help="Weighting for BLIP", default=0.01,
+    )
+    parser.add_argument(
         "--disable_pickscore",
         default=True,
         action="store_false",
@@ -73,18 +79,6 @@ def parse_args():
         type=float,
         help="Weighting for PickScore",
         default=0.05,
-    )
-    parser.add_argument(
-        "--disable_blip",
-        default=True,
-        action="store_false",
-        dest="enable_blip",
-    )
-    parser.add_argument(
-        "--blip_weighting",
-        type=float,
-        help="Weighting for BLIP",
-        default=0.01,
     )
     parser.add_argument(
         "--disable_aesthetic",

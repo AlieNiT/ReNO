@@ -1,5 +1,6 @@
 import torch
-from transformers import BlipModel, AutoProcessor
+from transformers import BlipProcessor, BlipForImageTextRetrieval
+
 from rewards.base_reward import BaseRewardLoss
 
 class BLIPLoss(BaseRewardLoss):
@@ -13,12 +14,12 @@ class BLIPLoss(BaseRewardLoss):
         cache_dir: str,
         memsave: bool = False,
     ):
-        self.processor = AutoProcessor.from_pretrained(
-            "Salesforce/blip-image-captioning-base",
+        self.processor = BlipProcessor.from_pretrained(
+            "Salesforce/blip-itm-base-coco",
             cache_dir=cache_dir
         )
-        self.blip_model = BlipModel.from_pretrained(
-            "Salesforce/blip-image-captioning-base",
+        self.blip_model = BlipForImageTextRetrieval.from_pretrained(
+            "Salesforce/blip-itm-base-coco",
             cache_dir=cache_dir
         )
         if memsave:
@@ -41,6 +42,12 @@ class BLIPLoss(BaseRewardLoss):
         text_features = self.blip_model.get_text_features(**prompt_token)
         return text_features
 
-    def compute_loss(self, image_features: torch.Tensor, text_features: torch.Tensor) -> torch.Tensor:
-        loss = 100 - (image_features @ text_features.T).mean()
-        return loss
+    def compute_loss(
+        self, image_features: torch.Tensor, text_features: torch.Tensor
+    ) -> torch.Tensor:
+        blip_loss = (
+            100
+            - (image_features @ text_features.T).mean()
+            * self.blip_model.logit_scale.exp()
+        )
+        return blip_loss
