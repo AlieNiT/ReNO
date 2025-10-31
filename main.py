@@ -160,7 +160,9 @@ def main(args):
         prompt_list_file = f"../T2I-CompBench/examples/dataset/{args.prompt}.txt"
         fo = open(prompt_list_file, "r")
         # TODO: Hard coding it just for the task, should be removed
-        prompts = fo.readlines()[: 100]
+        prompts = fo.readlines()
+        indices = torch.randperm(len(prompts))[:100]
+        prompts = [prompts[i] for i in indices]
         fo.close()
         os.makedirs(f"{args.save_dir}/{args.task}/{settings}/samples", exist_ok=True)
         for i, prompt in tqdm(enumerate(prompts)):
