@@ -1,3 +1,7 @@
+# [BLIP Score Colab Demo](https://colab.research.google.com/drive/1mcfYGf-SwABZbUL0B_6yrzOHtaI3EKcW?usp=sharing)
+
+___
+
 # <img align="left" src="assets/logo.png" width="65"> "ReNO: Enhancing One-step Text-to-Image Models through Reward-based Noise Optimization"
 
 __Authors__: Luca Eyring*, Shyamgopal Karthik*, Karsten Roth, Alexey Dosovitskiy, Zeynep Akata
