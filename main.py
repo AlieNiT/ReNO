@@ -26,6 +26,7 @@ def main(args):
         f"_reg{args.reg_weight if args.enable_reg else '0'}"
         f"{'_pickscore' + str(args.pickscore_weighting) if args.enable_pickscore else ''}"
         f"{'_clip' + str(args.clip_weighting) if args.enable_clip else ''}"
+        f"{'_blip' + str(args.blip_weighting) if args.enable_blip else ''}"
         f"{'_hps' + str(args.hps_weighting) if args.enable_hps else ''}"
         f"{'_imagereward' + str(args.imagereward_weighting) if args.enable_imagereward else ''}"
         f"{'_aesthetic' + str(args.aesthetic_weighting) if args.enable_aesthetic else ''}"
