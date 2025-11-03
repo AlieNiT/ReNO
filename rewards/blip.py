@@ -13,6 +13,7 @@ class BLIPLoss(BaseRewardLoss):
         device: torch.device,
         cache_dir: str,
         memsave: bool = False,
+        use_item_head: bool = False,
     ):
         self.processor = BlipProcessor.from_pretrained(
             "Salesforce/blip-itm-base-coco",
@@ -29,6 +30,7 @@ class BLIPLoss(BaseRewardLoss):
         self.blip_model = self.blip_model.to(device, dtype=dtype)
         self.blip_model.eval()
         self.freeze_parameters(self.blip_model.parameters())
+        self.use_itm_head = use_item_head
         super().__init__("BLIP", weighting)
 
     def get_image_features(self, image: torch.Tensor) -> torch.Tensor:
@@ -44,9 +46,19 @@ class BLIPLoss(BaseRewardLoss):
         self, image_features: torch.Tensor, text_features: torch.Tensor
     ) -> torch.Tensor:
         text_inputs = self.processor(text=text_features, return_tensors="pt")
-        blip_loss = self.blip_model(
-            pixel_values=image_features, 
-            **text_inputs, 
-            use_itm_head=False
-        )[0]
-        return 100 * (1 - blip_loss)
+        if self.use_itm_head:
+            itm_score = self.blip_model(
+                pixel_values=image_features, 
+                **text_inputs, 
+                use_itm_head=True
+            )[0]
+            target = torch.tensor([1]).to(self.blip_model.device)
+            ce_loss = torch.nn.functional.cross_entropy(itm_score, target)
+            return ce_loss * 50
+        else:
+            blip_loss = self.blip_model(
+                pixel_values=image_features, 
+                **text_inputs, 
+                use_itm_head=False
+            )[0]
+            return 100 * (1 - blip_loss)

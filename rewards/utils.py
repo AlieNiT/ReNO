@@ -65,6 +65,7 @@ def get_reward_losses(
                 device,
                 cache_dir,
                 memsave=args.memsave,
+                use_item_head=args.itm,
             )
         )
     if args.enable_aesthetic:

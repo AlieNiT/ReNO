@@ -132,6 +132,7 @@ def parse_args():
     parser.add_argument("--no_optim", default=False, action="store_true")
     parser.add_argument("--imageselect", default=False, action="store_true")
     parser.add_argument("--memsave", default=False, action="store_true")
+    parser.add_argument("--itm", help="Use itm head if using bliploss", default=False, action="store_true")
     parser.add_argument("--dtype", type=str, help="Data type to use", default="float16")
     parser.add_argument("--device_id", type=str, help="Device ID to use", default=None)
     parser.add_argument(
