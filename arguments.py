@@ -21,6 +21,7 @@ def parse_args():
     # model and optim
     parser.add_argument("--model", type=str, help="Model to use", default="sdxl-turbo")
     parser.add_argument("--lr", type=float, help="Learning rate", default=5.0)
+    parser.add_argument("--n_random_samples", type=int, help="Number of random samples", default=99999)
     parser.add_argument("--n_iters", type=int, help="Number of iterations", default=50)
     parser.add_argument(
         "--n_inference_steps", type=int, help="Number of iterations", default=1

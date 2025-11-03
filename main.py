@@ -164,7 +164,7 @@ def main(args):
         prompts = fo.readlines()
         random.seed(42)
         random.shuffle(prompts)
-        prompts = prompts[:100]
+        prompts = prompts[:args.n_random_samples]
         fo.close()
         os.makedirs(f"{args.save_dir}/{args.task}/{settings}/samples", exist_ok=True)
         for i, prompt in tqdm(enumerate(prompts)):
